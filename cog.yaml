@@ -5,30 +5,20 @@ build:
   system_packages:
     - "libgl1-mesa-glx"
     - "libglib2.0-0"
-  python_packages:
-    - "pydantic==1.10.13"
-    - "torch==2.0.1"
-    - "torchvision==0.15.2"
-    - "torchaudio==2.0.2"
-    - "xformers==0.0.22"
+    - "ffmpeg"
   run:
+    - pip install --upgrade pip setuptools wheel
+    - pip install pydantic==1.10.13
+    - pip install torch==2.0.1 torchvision==0.15.2 torchaudio==2.0.2 --index-url https://download.pytorch.org/whl/cu118
+    - pip install xformers==0.0.22
     - curl -o /usr/local/bin/pget -L "https://github.com/replicate/pget/releases/download/v0.5.6/pget_linux_x86_64" && chmod +x /usr/local/bin/pget
-    - pip install opencv-python-headless pillow numpy requests einops soundfile librosa pydub
     - git clone https://github.com/comfyanonymous/ComfyUI /ComfyUI
-    - cd /ComfyUI && pip install -r requirements.txt
-    - mkdir -p /ComfyUI/models/checkpoints
-    - mkdir -p /ComfyUI/models/vae
-    - mkdir -p /ComfyUI/models/loras
-    - mkdir -p /ComfyUI/models/controlnet
-    - mkdir -p /ComfyUI/models/clip_vision
-    - mkdir -p /ComfyUI/models/text_encoders
-    - mkdir -p /ComfyUI/models/audio
-    - mkdir -p /ComfyUI/input
-    - mkdir -p /ComfyUI/output
-    - mkdir -p /ComfyUI/custom_nodes
+    - cd /ComfyUI && pip install -r requirements.txt --no-deps
+    - pip install opencv-python-headless pillow numpy requests einops soundfile librosa pydub transformers accelerate sentencepiece
+    - mkdir -p /ComfyUI/models/checkpoints /ComfyUI/models/vae /ComfyUI/models/loras /ComfyUI/models/controlnet /ComfyUI/models/clip_vision /ComfyUI/models/text_encoders /ComfyUI/models/audio /ComfyUI/input /ComfyUI/output /ComfyUI/custom_nodes
     - cd /ComfyUI/custom_nodes && git clone https://github.com/Kosinkadink/ComfyUI-VideoHelperSuite.git
-    - cd /ComfyUI/custom_nodes/ComfyUI-VideoHelperSuite && pip install -r requirements.txt
+    - cd /ComfyUI/custom_nodes/ComfyUI-VideoHelperSuite && pip install -r requirements.txt --no-deps || true
     - cd /ComfyUI/custom_nodes && git clone https://github.com/kijai/ComfyUI-WanVideoWrapper.git
-    - cd /ComfyUI/custom_nodes/ComfyUI-WanVideoWrapper && pip install -r requirements.txt
+    - cd /ComfyUI/custom_nodes/ComfyUI-WanVideoWrapper && pip install -r requirements.txt --no-deps || true
 
 predict: "predict.py:Predictor"

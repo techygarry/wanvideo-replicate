@@ -6,6 +6,7 @@ build:
     - "libgl1-mesa-glx"
     - "libglib2.0-0"
   python_packages:
+    - "pydantic==1.10.13"
     - "torch==2.0.1"
     - "torchvision==0.15.2"
     - "torchaudio==2.0.2"
